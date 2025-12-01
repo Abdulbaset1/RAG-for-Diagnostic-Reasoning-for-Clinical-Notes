@@ -114,7 +114,8 @@ class CustomRAGPipeline:
         if not api_key:
             raise ValueError("GEMINI_API_KEY not found! Please set it in Streamlit secrets or environment variables.")
             
-        genai.configure(api_key=api_key)
+        # Configure with REST transport to avoid gRPC issues
+        genai.configure(api_key=api_key, transport='rest')
         
         # Try multiple model versions to find one that works
         models_to_try = [
@@ -126,20 +127,24 @@ class CustomRAGPipeline:
         ]
         
         self.model = None
+        print("\n--- DEBUG: Attempting to connect to Google AI API ---")
         for model_name in models_to_try:
             try:
-                print(f"Attempting to load model: {model_name}...")
+                print(f"Trying model: {model_name}...")
                 model = genai.GenerativeModel(model_name)
                 # Test the model with a simple prompt to verify it works
-                model.generate_content("Hello")
-                self.model = model
-                print(f"Successfully loaded: {model_name}")
-                break
+                response = model.generate_content("Test")
+                if response:
+                    self.model = model
+                    print(f"✅ SUCCESS: Loaded {model_name}")
+                    break
             except Exception as e:
-                print(f"Failed to load {model_name}: {str(e)}")
+                print(f"❌ FAILED {model_name}: {str(e)}")
         
         if not self.model:
-            raise ValueError("Could not load any Gemini model. Please check your API key and region availability.")
+            print("\n--- CRITICAL ERROR: All models failed ---")
+            print(f"API Key used (last 4 chars): ...{api_key[-4:] if api_key else 'None'}")
+            raise ValueError(f"Could not load any Gemini model. Check Streamlit logs for specific error messages (403=Key Error, 404=Model Not Found).")
         
         # Step 2: Load and preprocess data
         print("\n[Step 1/2] Loading dataset...")
