@@ -99,7 +99,7 @@ class CustomRAGPipeline:
     5. Response Generation
     """
     
-    def __init__(self, dataset_path: str, model_name: str = "microsoft/Phi-3-mini-4k-instruct"):
+    def __init__(self, dataset_path: str, model_name: str = "TinyLlama/TinyLlama-1.1B-Chat-v1.0"):
         print("="*60)
         print("INITIALIZING CUSTOM RAG PIPELINE")
         print("="*60)
@@ -360,4 +360,3 @@ if __name__ == "__main__":
             print(f"ANSWER: {result['answer']}")
             print("="*50)
             print(f"\nRetrieved from: {[doc['disease'] for doc in result['retrieved_documents']]}")
-
