@@ -2,9 +2,6 @@ streamlit
 pandas
 sentence-transformers
 faiss-cpu
-torch
-transformers
 scikit-learn
 numpy
-accelerate
-protobuf
+google-generativeai
