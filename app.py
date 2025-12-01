@@ -674,9 +674,6 @@ def display_system_metrics():
             if hasattr(st.session_state.pipeline.retriever, 'embeddings') and st.session_state.pipeline.retriever.embeddings is not None:
                 st.write("**Embedding Dimension:**")
                 st.write(st.session_state.pipeline.retriever.embeddings.shape[1])
-            
-            st.write("**Python Version:**")
-            st.write(f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}")
 
 # Run the application
 if __name__ == "__main__":
