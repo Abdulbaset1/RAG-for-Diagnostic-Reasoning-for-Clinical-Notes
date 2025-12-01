@@ -95,17 +95,17 @@ class CustomRAGPipeline:
         print("="*60)
         
         # Step 1: Configure API
-        api_key = None
+        api_key = AIzaSyDm6AG6_hFc3PDmYNIbJF-t2945o6UHEOQ
         
         # Try getting key from Streamlit secrets first (for Cloud)
         try:
-            api_key = st.secrets["GEMINI_API_KEY"]
+            api_key = st.secrets["AIzaSyDm6AG6_hFc3PDmYNIbJF-t2945o6UHEOQ"]
         except:
             pass
             
         # Try getting from environment variable (for local/Kaggle)
         if not api_key:
-            api_key = os.environ.get("GEMINI_API_KEY")
+            api_key = os.environ.get("AIzaSyDm6AG6_hFc3PDmYNIbJF-t2945o6UHEOQ")
             
         if not api_key:
             raise ValueError("GEMINI_API_KEY not found! Please set it in Streamlit secrets or environment variables.")
