@@ -115,7 +115,31 @@ class CustomRAGPipeline:
             raise ValueError("GEMINI_API_KEY not found! Please set it in Streamlit secrets or environment variables.")
             
         genai.configure(api_key=api_key)
-        self.model = genai.GenerativeModel('gemini-1.5-flash')
+        
+        # Try multiple model versions to find one that works
+        models_to_try = [
+            'gemini-1.5-flash',
+            'gemini-1.5-flash-latest',
+            'gemini-1.5-pro',
+            'gemini-pro',
+            'gemini-1.0-pro'
+        ]
+        
+        self.model = None
+        for model_name in models_to_try:
+            try:
+                print(f"Attempting to load model: {model_name}...")
+                model = genai.GenerativeModel(model_name)
+                # Test the model with a simple prompt to verify it works
+                model.generate_content("Hello")
+                self.model = model
+                print(f"Successfully loaded: {model_name}")
+                break
+            except Exception as e:
+                print(f"Failed to load {model_name}: {str(e)}")
+        
+        if not self.model:
+            raise ValueError("Could not load any Gemini model. Please check your API key and region availability.")
         
         # Step 2: Load and preprocess data
         print("\n[Step 1/2] Loading dataset...")
