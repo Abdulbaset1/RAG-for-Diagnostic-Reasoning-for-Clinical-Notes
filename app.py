@@ -61,7 +61,7 @@ class DataExtractor:
         """Extract data from ZIP file"""
         # First, download the file if it doesn't exist
         if not os.path.exists(self.zip_path):
-            if not self.download_from_Github():
+            if not self.download_from_github():
                 return False
             
         try:
